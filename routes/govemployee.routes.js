@@ -78,5 +78,18 @@ router.delete('/excluirServidor/:id', async (req, res) => {
     }
 })
 
+//6. Listar Cursos do Servidor
+router.get("/listarCursosServidor/:id", async(request,response)=>{
+    try {
+        const { id } = request.params;
+        const getGovEmployee = await GovEmployeeModel.findById(id).populate("courses");
+        const courses = getGovEmployee.courses;
+        return response.status(200).json(courses);
+    } catch (error) {
+        console.log(error);
+        return response.status(500).json({msg: "Erro 500 - Falha na Listagem do Servidor"});
+    }
+    
+});
 
 export default router;

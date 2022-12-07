@@ -67,15 +67,9 @@ const courseSchema = new Schema(
 
     govemployees: [
       {
-        govemployee: {
             type: Schema.Types.ObjectId,
             ref: "GovEmployee",
-        },
-        dataMatricula: {
-            type:Date,
-            default: Date.now
-        }    
-    }
+      }  
     ]
   },
   {

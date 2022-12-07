@@ -1,5 +1,6 @@
-import express from "express";
+import express, { request } from "express";
 import CourseModel from "../models/course.model.js";
+import GovEmployeeModel from "../models/govemployee.model.js";
 
 const router = express.Router();
 
@@ -33,7 +34,8 @@ router.get("/listarCurso/:id", async(request,response)=>{
     try {
         const { id } = request.params;
         //Problema o populate
-        const getCourse = await CourseModel.findById(id).populate("govemplees.govemployee");
+        const getCourse = await CourseModel.findById(id).populate("govemployees");
+        //2 populates
         return response.status(200).json(getCourse);
     } catch (error) {
         console.log(error);
@@ -79,7 +81,149 @@ router.delete('/excluirCurso/:id', async (req, res) => {
     }
 })
 
+//6. Fazer Matrícula de Curso (idCurso) por Servidor (idServidor) 
+router.put('/matricularCurso/:idCurso/:idServidor', async (request, response) => {
+    try {
+        const { idCurso } = request.params;
+        const { idServidor } = request.params;
 
+        const getServidor = await GovEmployeeModel.findById(idServidor);
+        console.log("==>"+getServidor);
+        if (getServidor === null)
+        {
+
+            const updateCourse = await CourseModel.findByIdAndUpdate(
+                idCurso,
+                {
+                    $push: {govemployees: idServidor}
+                },
+                {new: true, runValidators: true}    
+            );
+
+            const updateGovEmployee = await GovEmployeeModel.findByIdAndUpdate(
+                idServidor,
+                {
+                    $push: {courses: idCurso}
+                },
+                {new: true, runValidators: true}    
+            );
+            return response.status(200).json({msg:"Ok"});
+        }
+        else
+            return response.status(500).json({ msg: "Erro 500 - Servidor já matriculado!"});
+
+    } catch (error) {
+        console.log(error)
+
+        return response.status(500).json({ msg: "Erro 500 - Falha na Atualização do Curso"});
+    }
+})
+
+//6. Desfazer a Matrícula de Curso (idCurso) por Servidor (idServidor) 
+router.put('/desmatricularCurso/:idCurso/:idServidor', async (request, response) => {
+    try {
+        const { idCurso } = request.params;
+        const { idServidor } = request.params;
+
+        const updateCourse = await CourseModel.findByIdAndUpdate(
+            idCurso,
+            {
+                $pull: {govemployees: idServidor}
+            },
+            {new: true, runValidators: true}    
+        );
+
+        const updateGovEmployee = await GovEmployeeModel.findByIdAndUpdate(
+            idServidor,
+            {
+                $pull: {courses: idCurso}
+            },
+            {new: true, runValidators: true}    
+        );
+
+        return response.status(200).json({msg:"Ok"});
+
+    } catch (error) {
+        console.log(error)
+
+        return response.status(500).json({ msg: "Erro 500 - Falha na Atualização do Curso"});
+    }
+})
+
+/*
+router.put('/matricularCurso/:idCurso/:idServidor', async (request, response) => {
+    try {
+        const { idCurso } = request.params;
+        const { idServidor } = request.params;
+
+        request.body.govemployees.forEach(async element => {
+            // atualizar a coleção govemployee com o idCurso
+            await GovEmployeeModel.findByIdAndUpdate(
+                element.govemployee,
+                {
+                    $push: {courses: idCurso}
+                },
+                {new: true, runValidators: true}    
+            );
+        });
+
+        request.body.courses.array.forEach(async element => {
+            // atualizar cada produto inserido no pedido
+            await CourseModel.findByIdAndUpdate(
+                element.courses,
+                {
+                    $push: {govemployees: idServidor}
+                },
+                {new: true, runValidators: true}    
+            );
+        });
+
+        return response.status(200).json({ msg: "Curso e Servidor atualizados!"});
+
+    } catch (error) {
+        console.log(error)
+
+        return response.status(500).json({ msg: "Erro 500 - Falha na Atualização do Curso"});
+    }
+})
+
+//7. Desfazer a Matrícula de Curso (idCurso) por Servidor (idServidor) 
+
+router.delete('/matricularCurso/:idCurso/:idServidor', async (req, res) => {
+    try {
+        const { idCurso } = req.params;
+        const { idServidor } = req.params;
+
+        request.body.govemployees.forEach(async element => {
+            // atualizar cada produto inserido no pedido
+            await GovEmployeeModel.findByIdAndDelete(
+                element.govemployee,
+                {
+                    $pull: {courses: idCurso}
+                },
+                {new: true, runValidators: true}    
+            );
+        });
+
+        request.body.courses.forEach(async element => {
+            // atualizar cada produto inserido no pedido
+            await CourseModel.findByIdAndDelete(
+                element.courses,
+                {
+                    $pull: {govemployees: idServidor}
+                },
+                {new: true, runValidators: true}    
+            );
+        });
+
+        return res.status(200).json({ msg: "Curso e Servidor atualizados!"});
+
+    } catch (error) {
+        console.log(error)
+
+        return res.status(500).json({ msg: "Erro 500 - Falha na Atualização do Curso"});
+    }
+})
 // AddProductsToOrder
 /* router.post("/create",async(request,response)=>{
     try{
