@@ -10,8 +10,6 @@ async function connect() {
     console.log(
       `Connected to the database. DB_NAME: ${dbConnection.connection.name}`
     );
-    await CourseModel.deleteMany();
-    return GovEmployeeModel.deleteMany();
   } 
   catch (error) {
     console.log(error);
