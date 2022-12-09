@@ -3,6 +3,7 @@ import * as dotenv from "dotenv";
 import dbConnection from "./config/db.config.js";
 import courseRouter from "./routes/course.routes.js";
 import govEmployeeRouter from "./routes/govemployee.routes.js";
+import cors from "cors";
 //import coursesfile from "./courses.data.json" assert { type: "json" };
 //import govemployeesfile from "./govemployee.data.json" assert { type: "json" };
 //import CourseModel from "./models/course.model.js";
@@ -20,6 +21,9 @@ dbConnection();
 
 const app = express();
 app.use(express.json());
+
+//cors
+app.use(cors({ origin: process.env.REACT_URL }));
 
 app.use("/cursos", courseRouter);
 app.use("/servidores", govEmployeeRouter);
