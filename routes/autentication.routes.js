@@ -62,4 +62,6 @@ router.post("/registrar", async (request, response) => {
     }
   });
 
+export default router;  
+
   
