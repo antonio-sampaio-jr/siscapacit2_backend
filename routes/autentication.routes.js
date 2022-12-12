@@ -21,7 +21,7 @@ router.post("/registrar", async (request, response) => {
         ...request.body,
         senha: hashPassword,
       });
-  
+
       delete user._doc.senha;
   
       return response.status(201).json(user);
