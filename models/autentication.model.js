@@ -17,6 +17,7 @@ const autenticationSchema = new Schema({
     type: String,
     required: true,
   },
+  //teste
   perfil: {
     type: String,
     enum: ["usuário", "admin"],
