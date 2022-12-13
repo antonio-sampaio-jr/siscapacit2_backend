@@ -9,17 +9,18 @@ const rounds = 10;
 //1. Autenticar Admin
 router.post("/autenticarAdmin", async (request, response) => {
   try {
-    const { email, senha} = request.body;
+    const { email, senha } = request.body;
 
     const user = await AdminModel.findOne({ email: email });
 
     if (!user) {
       return response
         .status(400)
-        .json({ msg: "O Administrador não está cadastrado!" });
+        .json({ msg: "O Servidor Público não está cadastrado!" });
     }
-
-    if (await bcrypt.compare(senha, user.senha)) {
+    //console.log(senha, user.senha);
+    //console.log(user);
+    if (senha === user.senha) {
       //delete user._doc.senha;
       const token = generateToken(user);
 
@@ -41,7 +42,7 @@ router.post("/autenticarAdmin", async (request, response) => {
 //8. Alterar Senha Admin
 router.post("/alterarSenhaAdmin", async (request, response) => {
   try {
-    const {email, senha, novaSenha} = request.body;
+    const { email, senha, novaSenha } = request.body;
 
     const user = await AdminModel.findOne({ email: email });
 

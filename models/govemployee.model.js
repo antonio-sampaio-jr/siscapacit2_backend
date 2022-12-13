@@ -39,6 +39,7 @@ const govemployeeSchema = new Schema(
       unique: true,
       match: /[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/,
       lowercase: true,
+      required: true,
     },
     telefone: {
       type: String,
@@ -67,6 +68,7 @@ const govemployeeSchema = new Schema(
     senha: {
       type: String,
       default: "12345",
+      required: true,
     },
     courses: [
       {
