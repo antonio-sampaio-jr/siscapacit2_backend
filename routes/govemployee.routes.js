@@ -139,6 +139,7 @@ router.post("/autenticarServidor", async (request, response) => {
   }
 });
 
+//8. Alterar Senha Servidor
 router.post("/alterarSenhaServidor", async (request, response) => {
   try {
     const {email, senha, novaSenha} = request.body;
