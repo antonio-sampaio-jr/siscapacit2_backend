@@ -107,10 +107,10 @@ router.get("/listarCursosServidor/:id", async (request, response) => {
   }
 });
 
-//7. Autenticar Servidor 
+//7. Autenticar Servidor
 router.post("/autenticarServidor", async (request, response) => {
   try {
-    const { email, senha} = request.body;
+    const { email, senha } = request.body;
 
     const user = await GovEmployeeModel.findOne({ email: email });
 
@@ -119,8 +119,9 @@ router.post("/autenticarServidor", async (request, response) => {
         .status(400)
         .json({ msg: "O Servidor Público não está cadastrado!" });
     }
-
-    if (await bcrypt.compare(senha, user.senha)) {
+    //console.log(senha, user.senha);
+    //console.log(user);
+    if (senha === user.senha) {
       //delete user._doc.senha;
       const token = generateToken(user);
 
@@ -142,9 +143,11 @@ router.post("/autenticarServidor", async (request, response) => {
 //8. Alterar Senha Servidor
 router.post("/alterarSenhaServidor", async (request, response) => {
   try {
-    const {email, senha, novaSenha} = request.body;
+    const { email, senha, novaSenha } = request.body;
+    //console.log(email, senha, novaSenha);
 
     const user = await GovEmployeeModel.findOne({ email: email });
+    //console.log(user);
 
     if (!user) {
       return response
@@ -152,23 +155,25 @@ router.post("/alterarSenhaServidor", async (request, response) => {
         .json({ msg: "O Servidor Público não está cadastrado!" });
     }
 
+    if (user.senha !== senha) {
+      return response.status(400).json({ msg: "Senha incorreta!" });
+    }
+
     const saltString = await bcrypt.genSalt(rounds);
     const hashPassword = await bcrypt.hash(novaSenha, saltString);
 
-    const newUser = await AutenticationModel.create({
+    const newUser = await GovEmployeeModel.findByIdAndUpdate(user._id, {
       ...request.body,
       senha: hashPassword,
-      novaSenha: "",
     });
 
     delete user._doc.senha;
 
-    return response.status(201).json(user);
+    return response.status(201).json(newUser);
   } catch (error) {
     console.log(error);
     return response.status(500).json({ msg: "Falha no cadastro!" });
   }
 });
-
 
 export default router;
