@@ -97,8 +97,12 @@ router.put(
       const { idServidor } = request.params;
 
       const getServidor = await GovEmployeeModel.findById(idServidor);
-      console.log("==>" + getServidor);
-      if (!getServidor.courses.includes(idCurso)) {
+      const getCurso = await CourseModel.findById(idCurso);
+
+      if (
+        !getServidor.inscricoesAbertas.includes(idCurso) &&
+        getCurso.situacao === "Inscrições Abertas"
+      ) {
         const updateCourse = await CourseModel.findByIdAndUpdate(
           idCurso,
           {
@@ -110,26 +114,72 @@ router.put(
         const updateGovEmployee = await GovEmployeeModel.findByIdAndUpdate(
           idServidor,
           {
-            $push: { courses: idCurso },
+            $push: { inscricoesAbertas: idCurso },
           },
           { new: true, runValidators: true }
         );
+
         return response.status(200).json({ msg: "Ok" });
-      } else
+      }
+      if (
+        !getServidor.emAndamento.includes(idCurso) &&
+        getCurso.situacao === "Em Andamento"
+      ) {
+        const updateCourse = await CourseModel.findByIdAndUpdate(
+          idCurso,
+          {
+            $push: { govemployees: idServidor },
+          },
+          { new: true, runValidators: true }
+        );
+
+        const updateGovEmployee = await GovEmployeeModel.findByIdAndUpdate(
+          idServidor,
+          {
+            $push: { emAndamento: idCurso },
+          },
+          { new: true, runValidators: true }
+        );
+
+        return response.status(200).json({ msg: "Ok" });
+      }
+      if (
+        !getServidor.concluido.includes(idCurso) &&
+        getCurso.situacao === "Concluído"
+      ) {
+        const updateCourse = await CourseModel.findByIdAndUpdate(
+          idCurso,
+          {
+            $push: { govemployees: idServidor },
+          },
+          { new: true, runValidators: true }
+        );
+
+        const updateGovEmployee = await GovEmployeeModel.findByIdAndUpdate(
+          idServidor,
+          {
+            $push: { concluido: idCurso },
+          },
+          { new: true, runValidators: true }
+        );
+
+        return response.status(200).json({ msg: "Ok" });
+      } else {
         return response
           .status(500)
           .json({ msg: "Erro 500 - Servidor já matriculado!" });
+      }
     } catch (error) {
       console.log(error);
 
       return response
         .status(500)
-        .json({ msg: "Erro 500 - Falha na Atualização do Curso" });
+        .json({ msg: "Erro 500 - Falha na Atualização do Curso/Servidor" });
     }
   }
 );
 
-//7. Desfazer a Matrícula de Curso (idCurso) por Servidor (idServidor)
+//6. Desfazer a Matrícula de Curso (idCurso) por Servidor (idServidor)
 router.put(
   "/desmatricularCurso/:idCurso/:idServidor",
   async (request, response) => {
@@ -138,8 +188,12 @@ router.put(
       const { idServidor } = request.params;
 
       const getServidor = await GovEmployeeModel.findById(idServidor);
-      console.log("==>" + getServidor);
-      if (getServidor.courses.includes(idCurso)) {
+      const getCurso = await CourseModel.findById(idCurso);
+
+      if (
+        getServidor.inscricoesAbertas.includes(idCurso) &&
+        getCurso.situacao === "Inscrições Abertas"
+      ) {
         const updateCourse = await CourseModel.findByIdAndUpdate(
           idCurso,
           {
@@ -151,120 +205,69 @@ router.put(
         const updateGovEmployee = await GovEmployeeModel.findByIdAndUpdate(
           idServidor,
           {
-            $pull: { courses: idCurso },
+            $pull: { inscricoesAbertas: idCurso },
           },
           { new: true, runValidators: true }
         );
+
         return response.status(200).json({ msg: "Ok" });
-      } else
+      }
+      if (
+        getServidor.emAndamento.includes(idCurso) &&
+        getCurso.situacao === "Em Andamento"
+      ) {
+        const updateCourse = await CourseModel.findByIdAndUpdate(
+          idCurso,
+          {
+            $pull: { govemployees: idServidor },
+          },
+          { new: true, runValidators: true }
+        );
+
+        const updateGovEmployee = await GovEmployeeModel.findByIdAndUpdate(
+          idServidor,
+          {
+            $pull: { emAndamento: idCurso },
+          },
+          { new: true, runValidators: true }
+        );
+
+        return response.status(200).json({ msg: "Ok" });
+      }
+      if (
+        getServidor.concluido.includes(idCurso) &&
+        getCurso.situacao === "Concluído"
+      ) {
+        const updateCourse = await CourseModel.findByIdAndUpdate(
+          idCurso,
+          {
+            $pull: { govemployees: idServidor },
+          },
+          { new: true, runValidators: true }
+        );
+
+        const updateGovEmployee = await GovEmployeeModel.findByIdAndUpdate(
+          idServidor,
+          {
+            $pull: { concluido: idCurso },
+          },
+          { new: true, runValidators: true }
+        );
+
+        return response.status(200).json({ msg: "Ok" });
+      } else {
         return response
           .status(500)
-          .json({ msg: "Erro 500 - Servidor não matriculado neste curso" });
+          .json({ msg: "Erro 500 - Servidor não matriculado neste curso!" });
+      }
     } catch (error) {
       console.log(error);
 
       return response
         .status(500)
-        .json({ msg: "Erro 500 - Falha na Atualização do Curso" });
+        .json({ msg: "Erro 500 - Falha na Atualização do Curso/Servidor" });
     }
   }
 );
 
-/*
-router.put('/matricularCurso/:idCurso/:idServidor', async (request, response) => {
-    try {
-        const { idCurso } = request.params;
-        const { idServidor } = request.params;
-
-        request.body.govemployees.forEach(async element => {
-            // atualizar a coleção govemployee com o idCurso
-            await GovEmployeeModel.findByIdAndUpdate(
-                element.govemployee,
-                {
-                    $push: {courses: idCurso}
-                },
-                {new: true, runValidators: true}    
-            );
-        });
-
-        request.body.courses.array.forEach(async element => {
-            // atualizar cada produto inserido no pedido
-            await CourseModel.findByIdAndUpdate(
-                element.courses,
-                {
-                    $push: {govemployees: idServidor}
-                },
-                {new: true, runValidators: true}    
-            );
-        });
-
-        return response.status(200).json({ msg: "Curso e Servidor atualizados!"});
-
-    } catch (error) {
-        console.log(error)
-
-        return response.status(500).json({ msg: "Erro 500 - Falha na Atualização do Curso"});
-    }
-})
-
-//7. Desfazer a Matrícula de Curso (idCurso) por Servidor (idServidor) 
-
-router.delete('/matricularCurso/:idCurso/:idServidor', async (req, res) => {
-    try {
-        const { idCurso } = req.params;
-        const { idServidor } = req.params;
-
-        request.body.govemployees.forEach(async element => {
-            // atualizar cada produto inserido no pedido
-            await GovEmployeeModel.findByIdAndDelete(
-                element.govemployee,
-                {
-                    $pull: {courses: idCurso}
-                },
-                {new: true, runValidators: true}    
-            );
-        });
-
-        request.body.courses.forEach(async element => {
-            // atualizar cada produto inserido no pedido
-            await CourseModel.findByIdAndDelete(
-                element.courses,
-                {
-                    $pull: {govemployees: idServidor}
-                },
-                {new: true, runValidators: true}    
-            );
-        });
-
-        return res.status(200).json({ msg: "Curso e Servidor atualizados!"});
-
-    } catch (error) {
-        console.log(error)
-
-        return res.status(500).json({ msg: "Erro 500 - Falha na Atualização do Curso"});
-    }
-})
-// AddProductsToOrder
-/* router.post("/create",async(request,response)=>{
-    try{
-        const AddProductToOrder = await ProductModel.create(
-            {products:request.body.products}
-        );
-        AddProductToOrder.products.array.forEach(async element => {
-            // atualizar cada produto inserido no pedido
-            await ProductModel.findByIdAndUpdate(
-                element.product,
-                {
-                    $push: {orders: AddProductToOrder._id}
-                },
-                {new: true, runValidators: true}    
-            );
-        });
-        return response.status(201).json(AddProductToOrder);
-    } catch (error) {
-        console.log(error);
-        return response.status(500).json({msg: "Algo está errado!"});
-    }
-});
- */
 export default router;
