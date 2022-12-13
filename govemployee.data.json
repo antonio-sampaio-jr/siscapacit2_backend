@@ -1,5 +1,5 @@
 [
-    {   
+  {
     "matricula": "3",
     "nome": "Maria Fontenele",
     "foto": "https://abctreinamentos.com.br/imgs/maria.png",
@@ -14,9 +14,10 @@
     "dataAdmissao": "2013-05-13T12:55:40.496Z",
     "cpf": "123.4567.789-01",
     "dataNascimento": "1980-12-22T12:55:40.496Z",
-    "naturalidade": "Recife"
-    },
-    {    
+    "naturalidade": "Recife",
+    "senha": "12345"
+  },
+  {
     "matricula": "4",
     "nome": "Paulo Sampaio",
     "foto": "https://abctreinamentos.com.br/imgs/paulo.png",
@@ -31,9 +32,10 @@
     "dataAdmissao": "2014-08-13T12:55:40.496Z",
     "cpf": "123.4567.789-01",
     "dataNascimento": "1985-12-22T12:55:40.496Z",
-    "naturalidade": "Campinas"
-    },
-    {    
+    "naturalidade": "Campinas",
+    "senha": "12345"
+  },
+  {
     "matricula": "5",
     "nome": "Caio Santos",
     "foto": "https://abctreinamentos.com.br/imgs/caio.png",
@@ -48,9 +50,10 @@
     "dataAdmissao": "2014-08-13T12:55:40.496Z",
     "cpf": "123.4567.789-01",
     "dataNascimento": "1985-12-22T12:55:40.496Z",
-    "naturalidade": "Niterói"
-    },
-    {   
+    "naturalidade": "Niterói",
+    "senha": "12345"
+  },
+  {
     "matricula": "10",
     "nome": "Antonio Maria",
     "foto": "https://abctreinamentos.com.br/imgs/antonio.png",
@@ -65,9 +68,10 @@
     "dataAdmissao": "2020-01-21T12:55:40.496Z",
     "cpf": "111.222.333-44",
     "dataNascimento": "1990-06-23T12:55:40.496Z",
-    "naturalidade": "Brasília"
-    },
-    {   
+    "naturalidade": "Brasília",
+    "senha": "12345"
+  },
+  {
     "matricula": "6",
     "nome": "Isabela Sampaio",
     "foto": "https://abctreinamentos.com.br/imgs/isabela.png",
@@ -82,9 +86,10 @@
     "dataAdmissao": "2022-11-21T12:55:40.496Z",
     "cpf": "00000000000",
     "dataNascimento": "2022-08-03T12:55:40.496Z",
-    "naturalidade": "Belém"
-    },
-    {    
+    "naturalidade": "Belém",
+    "senha": "12345"
+  },
+  {
     "matricula": "7",
     "nome": "Heila Ghassan",
     "foto": "https://abctreinamentos.com.br/imgs/heila.png",
@@ -99,6 +104,7 @@
     "dataAdmissao": "2022-11-16T12:55:40.496Z",
     "cpf": "00000000000",
     "dataNascimento": "2022-11-05T12:55:40.496Z",
-    "naturalidade": "Belém"
-    }
+    "naturalidade": "Belém",
+    "senha": "12345"
+  }
 ]
