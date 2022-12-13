@@ -107,4 +107,67 @@ router.get("/listarCursosServidor/:id", async (request, response) => {
   }
 });
 
+//7. Autenticar Servidor 
+router.post("/autenticarServidor", async (request, response) => {
+  try {
+    const { email, senha} = request.body;
+
+    const user = await GovEmployeeModel.findOne({ email: email });
+
+    if (!user) {
+      return response
+        .status(400)
+        .json({ msg: "O Servidor Público não está cadastrado!" });
+    }
+
+    if (await bcrypt.compare(senha, user.senha)) {
+      //delete user._doc.senha;
+      const token = generateToken(user);
+
+      return response.status(200).json({
+        user: { ...user._doc },
+        token: token,
+      });
+    } else {
+      return response
+        .status(401)
+        .json({ msg: "A senha e/ou e-mail incorretos!" });
+    }
+  } catch (error) {
+    console.log(error);
+    return response.status(500).json({ msg: "Algo deu errado no login" });
+  }
+});
+
+router.post("/alterarSenhaServidor", async (request, response) => {
+  try {
+    const {email, senha, novaSenha} = request.body;
+
+    const user = await GovEmployeeModel.findOne({ email: email });
+
+    if (!user) {
+      return response
+        .status(400)
+        .json({ msg: "O Servidor Público não está cadastrado!" });
+    }
+
+    const saltString = await bcrypt.genSalt(rounds);
+    const hashPassword = await bcrypt.hash(novaSenha, saltString);
+
+    const newUser = await AutenticationModel.create({
+      ...request.body,
+      senha: hashPassword,
+      novaSenha: "",
+    });
+
+    delete user._doc.senha;
+
+    return response.status(201).json(user);
+  } catch (error) {
+    console.log(error);
+    return response.status(500).json({ msg: "Falha no cadastro!" });
+  }
+});
+
+
 export default router;
