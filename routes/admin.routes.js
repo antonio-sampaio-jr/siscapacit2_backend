@@ -24,10 +24,11 @@ router.post("/autenticarAdmin", async (request, response) => {
       //delete user._doc.senha;
       const token = generateToken(user);
 
-      return response.status(200).json({
-        user: { ...user._doc },
-        token: token,
-      });
+      // return response.status(200).json({
+      //   user: { ...user._doc },
+      //   token: token,
+      // });
+      return response.status(200).json({ msg: "OkAdmin" });
     } else {
       return response
         .status(401)
