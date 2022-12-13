@@ -15,12 +15,12 @@ dotenv.config();
 
 dbConnection();
 
-await CourseModel.deleteMany();
-await GovEmployeeModel.deleteMany();
-await AutenticationModel.deleteMany();
+//await CourseModel.deleteMany();
+//await GovEmployeeModel.deleteMany();
+//await AutenticationModel.deleteMany();
 
-await CourseModel.insertMany(coursesfile);
-await GovEmployeeModel.insertMany(govemployeesfile);
+//await CourseModel.insertMany(coursesfile);
+//await GovEmployeeModel.insertMany(govemployeesfile);
 
 const app = express();
 app.use(express.json());
