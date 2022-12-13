@@ -1,11 +1,6 @@
 import { model, Schema } from "mongoose";
 
 const autenticationSchema = new Schema({
-  nome: {
-    type: String,
-    required: true,
-    trim: true,
-  },
   email: {
     type: String,
     required: true,
@@ -17,10 +12,15 @@ const autenticationSchema = new Schema({
     type: String,
     required: true,
   },
-  //teste
+  novaSenha: {
+    type: String,
+  },
+  confirmaNovaSenha: {
+    type: String,
+  },
   perfil: {
     type: String,
-    enum: ["usuário", "admin"],
+    enum: ["1", "2"], //1 é admin, 2 é usuário
     default: "usuário",
   },
 });

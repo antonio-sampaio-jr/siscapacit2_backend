@@ -5,20 +5,22 @@ import courseRouter from "./routes/course.routes.js";
 import govEmployeeRouter from "./routes/govemployee.routes.js";
 import autenticationRouter from "./routes/autentication.routes.js";
 import cors from "cors";
-//import coursesfile from "./courses.data.json" assert { type: "json" };
-//import govemployeesfile from "./govemployee.data.json" assert { type: "json" };
-//import CourseModel from "./models/course.model.js";
-//import GovEmployeeModel from "./models/govemployee.model.js";
+import coursesfile from "./courses.data.json" assert { type: "json" };
+import govemployeesfile from "./govemployee.data.json" assert { type: "json" };
+import CourseModel from "./models/course.model.js";
+import GovEmployeeModel from "./models/govemployee.model.js";
+import AutenticationModel from "./models/autentication.model.js";
 
 dotenv.config();
 
 dbConnection();
 
-//await CourseModel.deleteMany();
-//await GovEmployeeModel.deleteMany();
+await CourseModel.deleteMany();
+await GovEmployeeModel.deleteMany();
+await AutenticationModel.deleteMany();
 
-//await CourseModel.insertMany(coursesfile);
-//await GovEmployeeModel.insertMany(govemployeesfile);
+await CourseModel.insertMany(coursesfile);
+await GovEmployeeModel.insertMany(govemployeesfile);
 
 const app = express();
 app.use(express.json());
