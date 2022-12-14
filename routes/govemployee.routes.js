@@ -132,7 +132,7 @@ router.post("/autenticarServidor", async (request, response) => {
       return response.status(200).json({ msg: "OkGovEmployee" });
     } else {
       return response
-        .status(401)
+        .status(200)
         .json({ msg: "A senha e/ou e-mail incorretos!" });
     }
   } catch (error) {
