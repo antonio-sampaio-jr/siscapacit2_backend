@@ -1,7 +1,7 @@
 import express from "express";
 import * as dotenv from "dotenv";
 import dbConnection from "./config/db.config.js";
-import courseRouter from "./routes/course.routes_old.js";
+import courseRouter from "./routes/course.routes.js";
 import govEmployeeRouter from "./routes/govemployee.routes.js";
 import adminRouter from "./routes/admin.routes.js";
 import cors from "cors";
