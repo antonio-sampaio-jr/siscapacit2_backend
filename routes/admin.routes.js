@@ -16,7 +16,7 @@ router.post("/autenticarAdmin", async (request, response) => {
     if (!user) {
       return response
         .status(400)
-        .json({ msg: "O Servidor Público não está cadastrado!" });
+        .json({ msg: "O Administrador não está cadastrado!" });
     }
     //console.log(senha, user.senha);
     //console.log(user);
