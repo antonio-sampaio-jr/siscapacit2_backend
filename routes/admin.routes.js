@@ -31,7 +31,7 @@ router.post("/autenticarAdmin", async (request, response) => {
       return response.status(200).json({ msg: "OkAdmin" });
     } else {
       return response
-        .status(200)
+        .status(401)
         .json({ msg: "A senha e/ou e-mail incorretos!" });
     }
   } catch (error) {
