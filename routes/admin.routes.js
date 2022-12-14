@@ -31,7 +31,7 @@ router.post("/autenticarAdmin", async (request, response) => {
       return response.status(200).json({ msg: "OkAdmin" });
     } else {
       return response
-        .status(401)
+        .status(200)
         .json({ msg: "A senha e/ou e-mail incorretos!" });
     }
   } catch (error) {
@@ -40,7 +40,7 @@ router.post("/autenticarAdmin", async (request, response) => {
   }
 });
 
-//8. Alterar Senha Admin
+//2. Alterar Senha Admin
 router.post("/alterarSenhaAdmin", async (request, response) => {
   try {
     const { email, senha, novaSenha } = request.body;
