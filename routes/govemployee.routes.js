@@ -125,11 +125,11 @@ router.post("/autenticarServidor", async (request, response) => {
       //delete user._doc.senha;
       const token = generateToken(user);
 
-      // return response.status(200).json({
-      //   user: { ...user._doc },
-      //   token: token,
-      // });
-      return response.status(200).json({ msg: "OkGovEmployee", token: token});
+      return response.status(200).json({
+        user: { ...user._doc },
+        token: token,
+      });
+      //return response.status(200).json({ msg: "OkGovEmployee", token: token});
     } else {
       return response
         .status(401)
