@@ -129,7 +129,7 @@ router.post("/autenticarServidor", async (request, response) => {
       //   user: { ...user._doc },
       //   token: token,
       // });
-      return response.status(200).json({ msg: "OkGovEmployee" });
+      return response.status(200).json({ msg: "OkGovEmployee", token: token});
     } else {
       return response
         .status(401)
