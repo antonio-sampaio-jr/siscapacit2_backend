@@ -119,8 +119,7 @@ router.post("/autenticarServidor", async (request, response) => {
         .status(400)
         .json({ msg: "O Servidor Público não está cadastrado!" });
     }
-    //console.log(senha, user.senha);
-    //console.log(user);
+
     if (senha === user.senha) {
       //delete user._doc.senha;
       const token = generateToken(user);
