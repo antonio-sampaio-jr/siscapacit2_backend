@@ -30,7 +30,7 @@ app.use(express.json());
 
 //cors
 app.use(cors({ origin: process.env.REACT_URL }));
-
+app.use(cors({ origin: process.env.REACT }));
 app.use("/cursos", courseRouter);
 app.use("/servidores", govEmployeeRouter);
 app.use("/administradores", adminRouter);
