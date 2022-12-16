@@ -27,6 +27,7 @@ router.post("/autenticarAdmin", async (request, response) => {
       return response.status(200).json({
         user: { ...user._doc },
         token: token,
+        msg: "OkAdmin"  
       });
       //return response.status(200).json({ msg: "OkAdmin" });
     } else {
